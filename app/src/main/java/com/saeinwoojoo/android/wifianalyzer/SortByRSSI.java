@@ -1,8 +1,8 @@
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import java.util.Comparator;
 
-import static com.seiwon.wifianalyzer.AccessPoint.NUMBER_OF_LEVELS;
+import static com.saeinwoojoo.android.wifianalyzer.AccessPoint.NUMBER_OF_LEVELS;
 
 public class SortByRSSI implements Comparator<AccessPoint> {
     public int compare(AccessPoint ap1, AccessPoint ap2) {

@@ -1,4 +1,4 @@
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import android.content.Context;
 import android.content.res.Resources;

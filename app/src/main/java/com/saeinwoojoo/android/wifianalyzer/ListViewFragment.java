@@ -1,4 +1,4 @@
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -55,54 +55,16 @@ public class ListViewFragment extends Fragment {
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener((parent, view, position, id) -> {
             Log.d(TAG, "------- Element " + position + " is clicked.");
-            ToastUtil.showText(view.getContext(), "Element " + position + " is clicked.",
+            AccessPoint accessPoint = mAccessPoints.get(position);
+            ToastUtil.showText(getActivity(),
+                    accessPoint.ssid + " at position " + position + " is clicked.",
                     Toast.LENGTH_SHORT);
         });
 
         mBtnScan = rootView.findViewById(R.id.btn_scan);
         if (null != mBtnScan) {
             mBtnScan.setOnClickListener(v -> {
-                if (null != mWiFiManager) {
-                    if (!mWiFiManager.isWifiEnabled())
-                        mWiFiManager.setWifiEnabled(true);
-
-                    boolean bResult = mWiFiManager.startScan();
-                    if (bResult) {
-                        if (null != getActivity())
-                            ((MainActivity) getActivity()).showOrHideProgressBarScanning(View.VISIBLE);
-                        mBtnScan.setEnabled(false);
-                        /*ToastUtil.showText(getActivity(),
-                                R.string.scanning_wifi,
-                                Toast.LENGTH_SHORT, Gravity.CENTER);*/
-                    } else {
-                        ToastUtil.showText(getActivity(),
-                                R.string.failed_to_scan_wifi,
-                                Toast.LENGTH_SHORT, Gravity.CENTER);
-
-                        // When failed to scan Wi-Fi, show configured Wi-Fi access point(s).
-                        List<WifiConfiguration> wifiConfigurations = mWiFiManager.getConfiguredNetworks();
-                        if (null != wifiConfigurations && !wifiConfigurations.isEmpty()) {
-                            mAccessPoints.clear();
-
-                            for (WifiConfiguration configuration : wifiConfigurations)
-                                mAccessPoints.add(new AccessPoint(configuration));
-
-                            if (mAccessPoints.isEmpty()) {
-                                if (null != getActivity()) {
-                                    ToastUtil.showText(getActivity().getApplicationContext(),
-                                            R.string.no_configured_wifi,
-                                            Toast.LENGTH_SHORT, Gravity.CENTER);
-                                }
-                                Log.i(TAG, "------- mBtnScan::onClick() - No configured Wi-Fi");
-                            } else {
-                                mAdapter.notifyDataSetChanged();
-                                mListView.smoothScrollToPosition(0);
-                            }
-                        }
-                        if (null != getActivity())
-                            ((MainActivity) getActivity()).showOrHideProgressBarScanning(View.GONE);
-                    }
-                }
+                scanWifiAccessPoints();
             });
         }
 
@@ -196,6 +158,50 @@ public class ListViewFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.d(TAG, "------- onDetach()...");
+    }
+
+    private void scanWifiAccessPoints() {
+        if (null != mWiFiManager) {
+            if (!mWiFiManager.isWifiEnabled())
+                mWiFiManager.setWifiEnabled(true);
+
+            boolean bResult = mWiFiManager.startScan();
+            if (bResult) {
+                if (null != getActivity())
+                    ((MainActivity) getActivity()).showOrHideProgressBarScanning(View.VISIBLE);
+                mBtnScan.setEnabled(false);
+                        /*ToastUtil.showText(getActivity(),
+                                R.string.scanning_wifi,
+                                Toast.LENGTH_SHORT, Gravity.CENTER);*/
+            } else {
+                ToastUtil.showText(getActivity(),
+                        R.string.failed_to_scan_wifi,
+                        Toast.LENGTH_SHORT, Gravity.CENTER);
+
+                // When failed to scan Wi-Fi, show configured Wi-Fi access point(s).
+                List<WifiConfiguration> wifiConfigurations = mWiFiManager.getConfiguredNetworks();
+                if (null != wifiConfigurations && !wifiConfigurations.isEmpty()) {
+                    mAccessPoints.clear();
+
+                    for (WifiConfiguration configuration : wifiConfigurations)
+                        mAccessPoints.add(new AccessPoint(configuration));
+
+                    if (mAccessPoints.isEmpty()) {
+                        if (null != getActivity()) {
+                            ToastUtil.showText(getActivity().getApplicationContext(),
+                                    R.string.no_configured_wifi,
+                                    Toast.LENGTH_SHORT, Gravity.CENTER);
+                        }
+                        Log.i(TAG, "------- mBtnScan::onClick() - No configured Wi-Fi");
+                    } else {
+                        mAdapter.notifyDataSetChanged();
+                        mListView.smoothScrollToPosition(0);
+                    }
+                }
+                if (null != getActivity())
+                    ((MainActivity) getActivity()).showOrHideProgressBarScanning(View.GONE);
+            }
+        }
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {

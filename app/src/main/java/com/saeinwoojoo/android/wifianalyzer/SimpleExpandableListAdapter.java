@@ -1,4 +1,4 @@
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import android.view.View;
 import android.view.ViewGroup;

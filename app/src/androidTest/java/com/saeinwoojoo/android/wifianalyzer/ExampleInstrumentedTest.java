@@ -1,4 +1,4 @@
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.seiwon.wifianalyzer", appContext.getPackageName());
+        assertEquals("com.saeinwoojoo.android.wifianalyzer", appContext.getPackageName());
     }
 }

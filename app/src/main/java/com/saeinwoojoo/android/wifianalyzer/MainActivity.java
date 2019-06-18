@@ -1,4 +1,4 @@
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -32,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        /* Two permissions belows are need because the AOSP tracker issue 185370
-        WifiManager#getScanResults() returns an empty array list if GPS is turned off
-        and the app does not have Location service permission. */
+        /* Two permissions belows are need in version 23, 24 and 25 because
+            the AOSP tracker issue 185370 WifiManager#getScanResults() returns
+            an empty array list if GPS is turned off and the app does not have
+            Location service permission. */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.O
                 && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

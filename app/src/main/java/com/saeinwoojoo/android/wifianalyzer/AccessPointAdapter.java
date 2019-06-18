@@ -1,4 +1,4 @@
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -11,11 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
-import static com.seiwon.wifianalyzer.AccessPoint.NUMBER_OF_LEVELS;
+import static com.saeinwoojoo.android.wifianalyzer.AccessPoint.NUMBER_OF_LEVELS;
 
 public class AccessPointAdapter extends RecyclerView.Adapter<AccessPointAdapter.ViewHolder> {
 
@@ -23,6 +22,7 @@ public class AccessPointAdapter extends RecyclerView.Adapter<AccessPointAdapter.
 
     private List<AccessPoint> mData;
     private int mResource;
+    private View.OnClickListener mOnItemClickListener;
 
     public AccessPointAdapter(List<AccessPoint> data, @LayoutRes int resource) {
         mData = data;
@@ -40,8 +40,8 @@ public class AccessPointAdapter extends RecyclerView.Adapter<AccessPointAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(mResource, viewGroup, false);
-        return new ViewHolder(view);
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(mResource, viewGroup, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
@@ -109,7 +109,11 @@ public class AccessPointAdapter extends RecyclerView.Adapter<AccessPointAdapter.
         Log.d(TAG, "------- onBindViewHolder() position = " + position + ", level = " + text);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView ivSignal;
         final TextView tvSecurityAuthType;
 
@@ -123,29 +127,25 @@ public class AccessPointAdapter extends RecyclerView.Adapter<AccessPointAdapter.
         final TextView tvSignalLevelPercent;
         final TextView tvRSSI;
 
-        public ViewHolder(View view) {
-            super(view);
+        public ViewHolder(View itemView) {
+            super(itemView);
 
-            view.setOnClickListener(v -> {
-                Log.d(TAG, "------- Element " + getAdapterPosition() + " is clicked.");
-                ToastUtil.showText(view.getContext(),
-                        "Element " + getAdapterPosition() + " is clicked.",
-                        Toast.LENGTH_SHORT);
-            });
+            itemView.setTag(this);
+            itemView.setOnClickListener(mOnItemClickListener);
 
-            ivSignal = view.findViewById(R.id.iv_signal_strength);
-            tvSecurityAuthType = view.findViewById(R.id.tv_security_auth_type);
+            ivSignal = itemView.findViewById(R.id.iv_signal_strength);
+            tvSecurityAuthType = itemView.findViewById(R.id.tv_security_auth_type);
 
-            tvSSID = view.findViewById(R.id.tv_ssid);
+            tvSSID = itemView.findViewById(R.id.tv_ssid);
             tvSSID.setSelected(true);
-            tvChannel = view.findViewById(R.id.tv_channel);
+            tvChannel = itemView.findViewById(R.id.tv_channel);
 
-            tvBSSID = view.findViewById(R.id.tv_bssid);
-            tvGHz = view.findViewById(R.id.tv_ghz);
+            tvBSSID = itemView.findViewById(R.id.tv_bssid);
+            tvGHz = itemView.findViewById(R.id.tv_ghz);
 
-            pbSignalLevel = view.findViewById(R.id.pb_signal_level);
-            tvSignalLevelPercent = view.findViewById(R.id.tv_signal_level_percent);
-            tvRSSI = view.findViewById(R.id.tv_rssi);
+            pbSignalLevel = itemView.findViewById(R.id.pb_signal_level);
+            tvSignalLevelPercent = itemView.findViewById(R.id.tv_signal_level_percent);
+            tvRSSI = itemView.findViewById(R.id.tv_rssi);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import android.support.annotation.LayoutRes;
 import android.text.TextUtils;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.seiwon.wifianalyzer.AccessPoint.NUMBER_OF_LEVELS;
+import static com.saeinwoojoo.android.wifianalyzer.AccessPoint.NUMBER_OF_LEVELS;
 
 public class AccessPointListAdapter extends BaseAdapter {
 
@@ -85,10 +85,10 @@ public class AccessPointListAdapter extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (null == convertView)
+        if (null == convertView) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(mResource, parent, false);
-
-        ((ViewGroup) convertView).setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            ((ViewGroup) convertView).setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        }
 
         bindView(position, convertView);
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.seiwon.wifianalyzer;
+package com.saeinwoojoo.android.wifianalyzer;
 
 import android.content.Context;
 import android.net.NetworkInfo.DetailedState;
@@ -25,8 +25,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-
-import java.util.Comparator;
 
 class AccessPoint {
     static final String TAG = "AccessPoint";
@@ -199,7 +197,7 @@ class AccessPoint {
 
     public void setSignalImage(ImageView signal) {
         if (null != signal) {
-            if (Integer.MAX_VALUE == mRssi || NO_RSSI_SIGNAAL == mRssi) {
+            if (Integer.MAX_VALUE == mRssi || NO_RSSI_SIGNAAL >= mRssi) {
                 signal.setImageLevel(0);
                 signal.setImageResource(R.drawable.wifi_signal_zero);
                 signal.setImageState((security != SECURITY_NONE) ?
