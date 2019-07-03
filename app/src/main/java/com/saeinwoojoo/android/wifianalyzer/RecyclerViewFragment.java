@@ -329,15 +329,13 @@ public class RecyclerViewFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener mOnItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
-            int position = viewHolder.getAdapterPosition();
-            AccessPoint accessPoint = mAccessPoints.get(position);
-            ToastUtil.showText(getActivity(),
-                    accessPoint.ssid + " at position " + position + " is clicked.",
-                    Toast.LENGTH_SHORT);
-        }
+    private View.OnClickListener mOnItemClickListener = v -> {
+        RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
+        int position = viewHolder.getAdapterPosition();
+        AccessPoint accessPoint = mAccessPoints.get(position);
+        ToastUtil.showText(getActivity(),
+                accessPoint.ssid + " at position " + position + " is clicked.",
+                Toast.LENGTH_SHORT);
+        // TODO: Add a pop-up dialog that displays the details of the selected access point.
     };
 }
