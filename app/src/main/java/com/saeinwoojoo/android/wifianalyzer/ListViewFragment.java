@@ -59,6 +59,7 @@ public class ListViewFragment extends Fragment {
             ToastUtil.showText(getActivity(),
                     accessPoint.ssid + " at position " + position + " is clicked.",
                     Toast.LENGTH_SHORT);
+            // TODO: Add a pop-up dialog that displays the details of the selected access point.
         });
 
         mBtnScan = rootView.findViewById(R.id.btn_scan);
