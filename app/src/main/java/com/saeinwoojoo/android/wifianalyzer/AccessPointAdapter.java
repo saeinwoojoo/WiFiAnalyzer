@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.saeinwoojoo.android.thememanager.library.ThemeManager;
+
 import java.util.List;
 
 import static com.saeinwoojoo.android.wifianalyzer.AccessPoint.NUMBER_OF_LEVELS;
@@ -41,6 +43,7 @@ public class AccessPointAdapter extends RecyclerView.Adapter<AccessPointAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(mResource, viewGroup, false);
+        ThemeManager.getInstance().applyTheme2(itemView, mResource);
         return new ViewHolder(itemView);
     }
 

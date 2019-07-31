@@ -10,7 +10,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RecyclerViewFragment extends Fragment {
+public class RecyclerViewFragment extends BaseFragment {
 
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
@@ -51,6 +50,11 @@ public class RecyclerViewFragment extends Fragment {
     private Button mBtnScan;
 
     @Override
+    public int getLayoutId() {
+        return R.layout.fragment_recycler_view;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "------- onCreate()...");
@@ -60,13 +64,17 @@ public class RecyclerViewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        //super.onCreateView(inflater, container, savedInstanceState);
         Log.d(TAG, "------- onCreateView()...");
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
-        View rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false);
-        rootView.setTag(TAG);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "------- onViewCreated()...");
 
-        mRecyclerView = rootView.findViewById(R.id.recyclerView);
+        view.setTag(TAG);
+        mRecyclerView = view.findViewById(R.id.recyclerView);
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
@@ -90,32 +98,24 @@ public class RecyclerViewFragment extends Fragment {
                 mRecyclerView.getContext(), LinearLayoutManager.VERTICAL);
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        RadioButton rbLinearLayout = rootView.findViewById(R.id.rb_linear_layout);
+        RadioButton rbLinearLayout = view.findViewById(R.id.rb_linear_layout);
         rbLinearLayout.setOnClickListener(v -> {
             Log.d(TAG, "------- mLinearLayoutRadioButton::onClick()");
             setRecyclerViewLayoutManager(LayoutManagerType.LINEAR_LAYOUT_MANAGER);
         });
 
-        RadioButton rbGridLayoutRadioButton = rootView.findViewById(R.id.rb_grid_layout);
+        RadioButton rbGridLayoutRadioButton = view.findViewById(R.id.rb_grid_layout);
         rbGridLayoutRadioButton.setOnClickListener(v -> {
             Log.d(TAG, "------- mGridLayoutRadioButton:onClick()");
             setRecyclerViewLayoutManager(LayoutManagerType.GRID_LAYOUT_MANAGER);
         });
 
-        mBtnScan = rootView.findViewById(R.id.btn_scan);
+        mBtnScan = view.findViewById(R.id.btn_scan);
         if (null != mBtnScan) {
             mBtnScan.setOnClickListener(v -> {
                 scanWifiAccessPoints();
             });
         }
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "------- onViewCreated()...");
     }
 
     @Override

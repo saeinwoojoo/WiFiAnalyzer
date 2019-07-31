@@ -30,10 +30,10 @@
         <scale android:scaleWidth="100%">
             <shape
                 android:shape="rectangle"
-                android:tint="?attr/colorAccent">
+                android:tint="?attr/colorPrimary">
                 <corners android:radius="@dimen/custom_progressbar_horizontal_radius" />
                 <size android:height="@dimen/custom_progressbar_horizontal_height" />
-                <solid android:color="@color/colorAccent" />
+                <solid android:color="@color/colorPrimary" />
             </shape>
         </scale>
     </item>
