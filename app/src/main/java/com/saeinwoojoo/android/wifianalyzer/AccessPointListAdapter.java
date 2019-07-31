@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.saeinwoojoo.android.thememanager.library.ThemeManager;
+
 import java.util.List;
 
 import static com.saeinwoojoo.android.wifianalyzer.AccessPoint.NUMBER_OF_LEVELS;
@@ -88,6 +90,7 @@ public class AccessPointListAdapter extends BaseAdapter {
         if (null == convertView) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(mResource, parent, false);
             ((ViewGroup) convertView).setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+            ThemeManager.getInstance().applyTheme2(convertView, mResource);
         }
 
         bindView(position, convertView);

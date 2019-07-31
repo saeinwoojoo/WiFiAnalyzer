@@ -10,7 +10,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ListViewFragment extends Fragment {
+public class ListViewFragment extends BaseFragment {
 
     private static final String TAG = "ListViewFragment";
 
@@ -36,6 +35,11 @@ public class ListViewFragment extends Fragment {
     private Button mBtnScan;
 
     @Override
+    public int getLayoutId() {
+        return R.layout.fragment_list_view;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "------- onCreate()...");
@@ -44,16 +48,20 @@ public class ListViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //super.onCreateView(inflater, container, savedInstanceState);
         Log.d(TAG, "------- onCreateView()...");
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
-        View rootView = inflater.inflate(R.layout.fragment_list_view, container, false);
-        rootView.setTag(TAG);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "------- onViewCreated()...");
 
-        mListView = rootView.findViewById(R.id.lv_access_points);
+        view.setTag(TAG);
+        mListView = view.findViewById(R.id.lv_access_points);
         mAdapter = new AccessPointListAdapter(mAccessPoints, R.layout.access_point_card_item);
         mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener((parent, view, position, id) -> {
+        mListView.setOnItemClickListener((parent, itemView, position, id) -> {
             Log.d(TAG, "------- Element " + position + " is clicked.");
             AccessPoint accessPoint = mAccessPoints.get(position);
             ToastUtil.showText(getActivity(),
@@ -62,20 +70,12 @@ public class ListViewFragment extends Fragment {
             // TODO: Add a pop-up dialog that displays the details of the selected access point.
         });
 
-        mBtnScan = rootView.findViewById(R.id.btn_scan);
+        mBtnScan = view.findViewById(R.id.btn_scan);
         if (null != mBtnScan) {
             mBtnScan.setOnClickListener(v -> {
                 scanWifiAccessPoints();
             });
         }
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "------- onViewCreated()...");
     }
 
     @Override

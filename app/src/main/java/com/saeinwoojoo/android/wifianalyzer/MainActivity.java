@@ -11,16 +11,17 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.saeinwoojoo.android.thememanager.library.ThemeManager;
 
-    private static final String TAG = "MainActivity";
+public class MainActivity extends BaseActivity {
+
+    private static final String LOG_TAG = "MainActivity";
     private static final int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 777;
 
     private LinearLayout mLlScanning;
@@ -28,23 +29,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "------- onCreate()...");
+        Log.d(LOG_TAG, "------- onCreate()...");
 
         setContentView(R.layout.activity_main);
+        ThemeManager.getInstance().applyTheme2(findViewById(R.id.main_container), R.layout.activity_main);
 
         /* Two permissions belows are need in version 23, 24 and 25 because
             the AOSP tracker issue 185370 WifiManager#getScanResults() returns
             an empty array list if GPS is turned off and the app does not have
-            Location service permission. */
+            Location service permission.
+            Some OEMs fix this issue but Google does not! */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.O
                 && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "------- onCreate(): Location permission is not granted.");
+            Log.i(LOG_TAG, "------- onCreate(): Location permission is not granted.");
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
         } else {
             // permission was previously granted or it's in the legacy device
-            Log.i(TAG, "------- onCreate(): Location permission was previously granted or it's in the legacy device.");
+            Log.i(LOG_TAG, "------- onCreate(): Location permission was previously granted or it's in the legacy device.");
         }
 
         mLlScanning = findViewById(R.id.ll_scanning);
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         radioBtnRecyclerViewFragment.setOnClickListener(v -> {
             Fragment topFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if (topFragment instanceof RecyclerViewFragment) {
-                Log.d(TAG, "------- radioBtnRecyclerViewFragment::onClick() - current top fragment is RecyclerViewFragment.");
+                Log.d(LOG_TAG, "------- radioBtnRecyclerViewFragment::onClick() - current top fragment is RecyclerViewFragment.");
                 return;
             }
             launchRecyclerViewFragment();
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         radioBtnListViewFragment.setOnClickListener(v -> {
             Fragment topFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if (topFragment instanceof ListViewFragment) {
-                Log.d(TAG, "------- radioBtnListViewFragment::onClick() - current top fragment is ListViewFragment.");
+                Log.d(LOG_TAG, "------- radioBtnListViewFragment::onClick() - current top fragment is ListViewFragment.");
                 return;
             }
             launchListViewFragment();
@@ -76,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "------- onStart()...");
+        Log.d(LOG_TAG, "------- onStart()...");
     }
 
     /**
@@ -102,55 +105,55 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d(TAG, "------- onRestart()...");
+        Log.d(LOG_TAG, "------- onRestart()...");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "------- onResume()...");
+        Log.d(LOG_TAG, "------- onResume()...");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "------- onPause()...");
+        Log.d(LOG_TAG, "------- onPause()...");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "------- onStop()...");
+        Log.d(LOG_TAG, "------- onStop()...");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "------- onDestroy()...");
+        Log.d(LOG_TAG, "------- onDestroy()...");
     }
 
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        Log.d(TAG, "------- onTrimMemory(): level = " + level);
+        Log.d(LOG_TAG, "------- onTrimMemory(): level = " + level);
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.d(TAG, "------- onConfigurationChanged()...");
+        Log.d(LOG_TAG, "------- onConfigurationChanged()...");
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.d(TAG, "------- onBackPressed()...");
+        Log.d(LOG_TAG, "------- onBackPressed()...");
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "------- onSaveInstanceState(Bundle outState)");
+        Log.d(LOG_TAG, "------- onSaveInstanceState(Bundle outState)");
     }
 
     /**
@@ -170,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        Log.d(TAG, "------- onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)");
+        Log.d(LOG_TAG, "------- onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState)");
     }
 
     /**
@@ -195,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.d(TAG, "------- onRestoreInstanceState(Bundle savedInstanceState)");
+        Log.d(LOG_TAG, "------- onRestoreInstanceState(Bundle savedInstanceState)");
     }
 
     /**
@@ -221,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onRestoreInstanceState(savedInstanceState, persistentState);
-        Log.d(TAG, "------- onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState)");
+        Log.d(LOG_TAG, "------- onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState)");
     }
 
     @Override
@@ -231,9 +234,9 @@ public class MainActivity extends AppCompatActivity {
         if (PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION == requestCode) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                Log.i(TAG, "------- onRequestPermissionsResult(): Location permission is granted.");
+                Log.i(LOG_TAG, "------- onRequestPermissionsResult(): Location permission is granted.");
             } else {
-                Log.e(TAG, "------- onRequestPermissionsResult(): Location permission is not granted.");
+                Log.e(LOG_TAG, "------- onRequestPermissionsResult(): Location permission is not granted.");
                 ToastUtil.showText(getApplicationContext(), R.string.plz_grant_location_permission,
                         Toast.LENGTH_LONG, Gravity.CENTER);
                 finish();

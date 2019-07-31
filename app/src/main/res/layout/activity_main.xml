@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:theme="http://schemas.android.com/apk/theme-manager"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -16,22 +18,27 @@
         app:layout_constraintBottom_toTopOf="@id/view_divider"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
             android:id="@+id/rb_recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:text="@string/recycler_view" />
+            android:text="@string/recycler_view"
+            android:textColor="@color/colorPrimary"
+            android:buttonTint="@color/colorPrimary"
+            theme:viewResourcePackageName="@string/resource_pkg_name_global"/>
 
         <RadioButton
             android:id="@+id/rb_list_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:text="@string/list_view" />
+            android:text="@string/list_view"
+            android:textColor="@color/colorPrimary"
+            android:buttonTint="@color/colorPrimary"
+            theme:viewResourcePackageName="@string/resource_pkg_name_global"/>
     </RadioGroup>
 
     <View
@@ -69,15 +76,21 @@
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
+            android:id="@+id/pb_scanning"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/progress_indeterminate_anim_large_material"
+            theme:viewResourcePackageName="@string/resource_pkg_name_global"/>
 
         <TextView
+            android:id="@+id/tv_scanning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/scanning_text_padding_top"
             android:singleLine="true"
             android:text="@string/scanning_wifi"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/colorPrimary"
+            theme:viewResourcePackageName="@string/resource_pkg_name_global" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

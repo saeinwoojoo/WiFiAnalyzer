@@ -5,15 +5,19 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-        <item name="wifi_signal_color">?android:attr/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="wifi_signal_color">?android:attr/colorPrimary</item>
     </style>
 
     <!-- style="@android:style/Widget.ProgressBar.Horizontal" -->
     <!-- style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal" -->
     <!-- style="?android:attr/progressBarStyleHorizontal" -->
-    <style name="CustomProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/custom_progressbar_horizontal</item>
+    <style name="CustomProgressBarHorizontal" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/custom_progress_horizontal</item>
+    </style>
+
+    <style name="MyProgressBar" parent="@style/Widget.AppCompat.ProgressBar">
+        <item name="android:progressDrawable">@drawable/custom_progress_horizontal</item>
     </style>
 
 </resources>
