@@ -44,4 +44,8 @@
     <string name="wifi_security_psk_generic">@string/wifi_security_wpa_wpa2</string>
     <!-- Do not translate.  Concise terminology for wifi with 802.1x EAP security -->
     <string name="wifi_security_eap">802.1x EAP</string>
+
+    <string name="msg_no_such_app_installed_in_the_device">"No such application installed in the device to handle the action."</string>
+    <string name="msg_exit_app_confirm">"Are you sure you want to exit app?"</string>
+    <string name="msg_press_back_key_again_to_exit">"Press \'Back\' button again to exit."</string>
 </resources>

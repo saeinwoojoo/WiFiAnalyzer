@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.saeinwoojoo.android.thememanager.library.ThemeManager;
+
 class AccessPoint {
     static final String TAG = "AccessPoint";
 
@@ -199,12 +201,28 @@ class AccessPoint {
         if (null != signal) {
             if (Integer.MAX_VALUE == mRssi || NO_RSSI_SIGNAAL >= mRssi) {
                 signal.setImageLevel(0);
-                signal.setImageResource(R.drawable.wifi_signal_zero);
+                if (!ThemeManager.getInstance().isPackageInstalled(signal.getContext(),
+                        signal.getContext().getResources().getString(R.string.resource_pkg_name_global)))
+                    signal.setImageResource(R.drawable.wifi_signal_zero);
+                else
+                    signal.setImageDrawable(ThemeManager.getInstance().getDrawable(
+                        signal.getContext(),
+                        R.drawable.wifi_signal_zero,
+                        signal.getResources().getString(R.string.resource_pkg_name_global)
+                ));
                 signal.setImageState((security != SECURITY_NONE) ?
                         STATE_SECURED : STATE_NONE, true);
             } else {
                 signal.setImageLevel(getLevel());
-                signal.setImageResource(R.drawable.wifi_signal);
+                if (!ThemeManager.getInstance().isPackageInstalled(signal.getContext(),
+                        signal.getContext().getResources().getString(R.string.resource_pkg_name_global)))
+                    signal.setImageResource(R.drawable.wifi_signal);
+                else
+                    signal.setImageDrawable(ThemeManager.getInstance().getDrawable(
+                        signal.getContext(),
+                        R.drawable.wifi_signal,
+                        signal.getResources().getString(R.string.resource_pkg_name_global)
+                ));
                 signal.setImageState((security != SECURITY_NONE) ?
                         STATE_SECURED : STATE_NONE, true);
             }
