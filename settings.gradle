@@ -1,1 +1,1 @@
-include ':app', ':wifianalyzer_theme_global'
+include ':app', ':wifianalyzer_theme_pink', ':wifianalyzer_theme_blue'
