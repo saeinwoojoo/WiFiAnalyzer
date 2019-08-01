@@ -4,8 +4,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <!--<color name="colorAccent">#D81B60</color>-->
     <color name="colorAccent">#008577</color>
-    <color name="colorSecondaryProgress">#90caf9</color>
-    <color name="indeterminate_progress">#FFFFFF</color>
-
-    <drawable name="indeterminate_progress">#90caf9</drawable>
+    <color name="colorSecondaryProgress">#66CC00</color>
+    <color name="indeterminate_progress">#008577</color>
 </resources>

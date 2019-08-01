@@ -5,7 +5,7 @@
         android:gravity="center_vertical|fill_horizontal">
         <shape
             android:shape="rectangle"
-            android:tint="?attr/colorControlNormal">
+            android:tint="@android:color/darker_gray">
             <corners android:radius="@dimen/custom_progressbar_horizontal_radius" />
             <size android:height="@dimen/custom_progressbar_horizontal_height" />
             <solid android:color="@android:color/darker_gray" />
@@ -17,7 +17,7 @@
         <scale android:scaleWidth="100%">
             <shape
                 android:shape="rectangle"
-                android:tint="?attr/colorControlHighlight">
+                android:tint="@color/colorSecondaryProgress">
                 <corners android:radius="@dimen/custom_progressbar_horizontal_radius" />
                 <size android:height="@dimen/custom_progressbar_horizontal_height" />
                 <solid android:color="@color/colorSecondaryProgress" />
@@ -30,7 +30,7 @@
         <scale android:scaleWidth="100%">
             <shape
                 android:shape="rectangle"
-                android:tint="?attr/colorPrimary">
+                android:tint="@color/colorPrimary">
                 <corners android:radius="@dimen/custom_progressbar_horizontal_radius" />
                 <size android:height="@dimen/custom_progressbar_horizontal_height" />
                 <solid android:color="@color/colorPrimary" />

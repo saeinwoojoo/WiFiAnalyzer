@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0080FF</color>
+    <color name="colorPrimaryDark">#0066CC</color>
+    <color name="colorAccent">#000099</color>
+    <color name="colorSecondaryProgress">#66B2FF</color>
+    <color name="indeterminate_progress">#0080FF</color>
+    <color name="wifi_signal_color">#0080FF</color>
+</resources>
