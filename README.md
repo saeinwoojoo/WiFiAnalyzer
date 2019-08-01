@@ -1,5 +1,5 @@
 # WiFiAnalyzer
 
-Scan WiFi access points and show access point(s).
+Scans WiFi access points and shows access point details.
 
-Example of Theme change from another apk(s) which has only resources such as image, string, color ans etc. 
+Example of Theme change from another apk(s) which has only resources such as image, string, color and etc. 
