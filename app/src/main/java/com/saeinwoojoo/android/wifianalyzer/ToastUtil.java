@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
+@Deprecated
 public class ToastUtil {
 
     private Toast mToast;

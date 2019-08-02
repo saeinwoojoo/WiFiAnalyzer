@@ -43,7 +43,7 @@ public class AccessPointAdapter extends RecyclerView.Adapter<AccessPointAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(mResource, viewGroup, false);
-        ThemeManager.getInstance().applyTheme2(itemView, mResource);
+        ThemeManager.getInstance().applyTheme(itemView, mResource);
         return new ViewHolder(itemView);
     }
 

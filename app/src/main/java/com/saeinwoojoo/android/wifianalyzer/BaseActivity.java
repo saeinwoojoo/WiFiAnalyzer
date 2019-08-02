@@ -11,8 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.saeinwoojoo.android.thememanager.library.ThemeManager;
@@ -51,6 +52,16 @@ public class BaseActivity extends AppCompatActivity {
 					getApplicationContext(), R.color.colorPrimaryDark,
 					getString(R.string.resource_pkg_name_global)));
 		}
+	}
+
+	@Override
+	public void setContentView(int layoutResID) {
+		super.setContentView(layoutResID);
+
+		//ThemeManager.getInstance().applyTheme(findViewById(getRootViewId()), layoutResID);
+		View contentView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+		if (contentView != null)
+			ThemeManager.getInstance().applyTheme(contentView, layoutResID);
 	}
 
 	@Override

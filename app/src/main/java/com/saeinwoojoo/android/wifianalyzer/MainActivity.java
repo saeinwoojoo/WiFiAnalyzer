@@ -17,8 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.saeinwoojoo.android.thememanager.library.ThemeManager;
-
 public class MainActivity extends BaseActivity {
 
     private static final String LOG_TAG = "MainActivity";
@@ -32,7 +30,6 @@ public class MainActivity extends BaseActivity {
         Log.d(LOG_TAG, "------- onCreate()...");
 
         setContentView(R.layout.activity_main);
-        ThemeManager.getInstance().applyTheme2(findViewById(R.id.main_container), R.layout.activity_main);
 
         /* Two permissions belows are need in version 23, 24 and 25 because
             the AOSP tracker issue 185370 WifiManager#getScanResults() returns
@@ -237,8 +234,9 @@ public class MainActivity extends BaseActivity {
                 Log.i(LOG_TAG, "------- onRequestPermissionsResult(): Location permission is granted.");
             } else {
                 Log.e(LOG_TAG, "------- onRequestPermissionsResult(): Location permission is not granted.");
-                ToastUtil.showText(getApplicationContext(), R.string.plz_grant_location_permission,
-                        Toast.LENGTH_LONG, Gravity.CENTER);
+                /*ToastUtil.showText(getApplicationContext(), R.string.plz_grant_location_permission,
+                        Toast.LENGTH_LONG, Gravity.CENTER);*/
+                showToast(R.string.plz_grant_location_permission, Toast.LENGTH_LONG, Gravity.CENTER);
                 finish();
             }
         }
