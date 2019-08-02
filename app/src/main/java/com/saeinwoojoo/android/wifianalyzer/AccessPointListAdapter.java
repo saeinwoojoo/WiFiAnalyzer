@@ -90,7 +90,7 @@ public class AccessPointListAdapter extends BaseAdapter {
         if (null == convertView) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(mResource, parent, false);
             ((ViewGroup) convertView).setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            ThemeManager.getInstance().applyTheme2(convertView, mResource);
+            ThemeManager.getInstance().applyTheme(convertView, mResource);
         }
 
         bindView(position, convertView);

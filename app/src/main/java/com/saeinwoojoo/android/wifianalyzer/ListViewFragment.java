@@ -64,9 +64,10 @@ public class ListViewFragment extends BaseFragment {
         mListView.setOnItemClickListener((parent, itemView, position, id) -> {
             Log.d(TAG, "------- Element " + position + " is clicked.");
             AccessPoint accessPoint = mAccessPoints.get(position);
-            ToastUtil.showText(getActivity(),
+            /*ToastUtil.showText(getActivity(),
                     accessPoint.ssid + " at position " + position + " is clicked.",
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT);*/
+            showToast(accessPoint.ssid + " at position " + position + " is clicked.");
             // TODO: Add a pop-up dialog that displays the details of the selected access point.
         });
 
@@ -175,9 +176,10 @@ public class ListViewFragment extends BaseFragment {
                                 R.string.scanning_wifi,
                                 Toast.LENGTH_SHORT, Gravity.CENTER);*/
             } else {
-                ToastUtil.showText(getActivity(),
+                /*ToastUtil.showText(getActivity(),
                         R.string.failed_to_scan_wifi,
-                        Toast.LENGTH_SHORT, Gravity.CENTER);
+                        Toast.LENGTH_SHORT, Gravity.CENTER);*/
+                showToast(R.string.failed_to_scan_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
 
                 // When failed to scan Wi-Fi, show configured Wi-Fi access point(s).
                 List<WifiConfiguration> wifiConfigurations = mWiFiManager.getConfiguredNetworks();
@@ -189,9 +191,10 @@ public class ListViewFragment extends BaseFragment {
 
                     if (mAccessPoints.isEmpty()) {
                         if (null != getActivity()) {
-                            ToastUtil.showText(getActivity().getApplicationContext(),
+                            /*ToastUtil.showText(getActivity().getApplicationContext(),
                                     R.string.no_configured_wifi,
-                                    Toast.LENGTH_SHORT, Gravity.CENTER);
+                                    Toast.LENGTH_SHORT, Gravity.CENTER);*/
+                            showToast(R.string.no_configured_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
                         }
                         Log.i(TAG, "------- mBtnScan::onClick() - No configured Wi-Fi");
                     } else {
@@ -225,9 +228,10 @@ public class ListViewFragment extends BaseFragment {
                     }
 
                     if (mAccessPoints.isEmpty()) {
-                        ToastUtil.showText(getActivity(),
+                        /*ToastUtil.showText(getActivity(),
                                 R.string.no_scan_result,
-                                Toast.LENGTH_SHORT, Gravity.CENTER);
+                                Toast.LENGTH_SHORT, Gravity.CENTER);*/
+                        showToast(R.string.no_scan_result, Toast.LENGTH_SHORT, Gravity.CENTER);
                     } else {
                         if (mAccessPoints.size() > 1)
                             Collections.sort(mAccessPoints, new SortByRSSI());
