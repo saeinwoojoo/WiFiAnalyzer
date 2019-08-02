@@ -261,8 +261,9 @@ public class RecyclerViewFragment extends BaseFragment {
                         /*ToastUtil.showText(getActivity(),
                                 R.string.scanning_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);*/
             } else {
-                ToastUtil.showText(getActivity(),
-                        R.string.failed_to_scan_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
+                /*ToastUtil.showText(getActivity(),
+                        R.string.failed_to_scan_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);*/
+                showToast(R.string.failed_to_scan_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
 
                 // When failed to scan Wi-Fi, show configured Wi-Fi access point(s).
                 List<WifiConfiguration> wifiConfigurations = mWiFiManager.getConfiguredNetworks();
@@ -274,8 +275,9 @@ public class RecyclerViewFragment extends BaseFragment {
 
                     if (mAccessPoints.isEmpty()) {
                         if (null != getActivity()) {
-                            ToastUtil.showText(getActivity().getApplicationContext(),
-                                    R.string.no_configured_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
+                            /*ToastUtil.showText(getActivity().getApplicationContext(),
+                                    R.string.no_configured_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);*/
+                            showToast(R.string.no_configured_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
                         }
                         Log.i(TAG, "------- mBtnScan::onClick() - No configured Wi-Fi");
                     } else {
@@ -310,8 +312,9 @@ public class RecyclerViewFragment extends BaseFragment {
                     }
 
                     if (mAccessPoints.isEmpty()) {
-                        ToastUtil.showText(getActivity(),
-                                R.string.no_scan_result, Toast.LENGTH_SHORT, Gravity.CENTER);
+                        /*ToastUtil.showText(getActivity(),
+                                R.string.no_scan_result, Toast.LENGTH_SHORT, Gravity.CENTER);*/
+                        showToast(R.string.no_scan_result, Toast.LENGTH_SHORT, Gravity.CENTER);
                     } else {
                         if (1 < mAccessPoints.size())
                             Collections.sort(mAccessPoints, new SortByRSSI());
@@ -333,8 +336,10 @@ public class RecyclerViewFragment extends BaseFragment {
         RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
         int position = viewHolder.getAdapterPosition();
         AccessPoint accessPoint = mAccessPoints.get(position);
-        ToastUtil.showText(getActivity(),
+        /*ToastUtil.showText(getActivity(),
                 accessPoint.ssid + " at position " + position + " is clicked.",
+                Toast.LENGTH_SHORT);*/
+        showToast(accessPoint.ssid + " at position " + position + " is clicked.",
                 Toast.LENGTH_SHORT);
         // TODO: Add a pop-up dialog that displays the details of the selected access point.
     };
