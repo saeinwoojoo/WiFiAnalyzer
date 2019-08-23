@@ -234,8 +234,6 @@ public class MainActivity extends BaseActivity {
                 Log.i(LOG_TAG, "------- onRequestPermissionsResult(): Location permission is granted.");
             } else {
                 Log.e(LOG_TAG, "------- onRequestPermissionsResult(): Location permission is not granted.");
-                /*ToastUtil.showText(getApplicationContext(), R.string.plz_grant_location_permission,
-                        Toast.LENGTH_LONG, Gravity.CENTER);*/
                 showToast(R.string.plz_grant_location_permission, Toast.LENGTH_LONG, Gravity.CENTER);
                 finish();
             }

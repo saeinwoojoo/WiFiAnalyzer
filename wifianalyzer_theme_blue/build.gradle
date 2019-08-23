@@ -1,17 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion project.ext.compileSdkVersion
-    buildToolsVersion project.ext.buildToolsVersion
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
         applicationId "com.saeinwoojoo.android.wifianalyzer.theme.global"
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -28,7 +28,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
-    testImplementation "junit:junit:${junit_version}"
-    androidTestImplementation "com.android.support.test:runner:${runner_version}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresso_version}"
+//    testImplementation "junit:junit:${junit_version}"
+//    androidTestImplementation "com.android.support.test:runner:${runner_version}"
+//    androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresso_version}"
 }
