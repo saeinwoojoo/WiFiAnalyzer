@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,11 +17,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,11 +27,8 @@ public class ListViewFragment extends BaseFragment {
 
     private static final String TAG = "ListViewFragment";
 
-    private WifiManager mWiFiManager;
-    private List<AccessPoint> mAccessPoints = new ArrayList<>();
-    private AccessPointListAdapter mAdapter;
     private ListView mListView;
-    private Button mBtnScan;
+    protected AccessPointListAdapter mAdapter;
 
     @Override
     public int getLayoutId() {
@@ -47,7 +43,8 @@ public class ListViewFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "------- onCreateView()...");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -64,9 +61,6 @@ public class ListViewFragment extends BaseFragment {
         mListView.setOnItemClickListener((parent, itemView, position, id) -> {
             Log.d(TAG, "------- Element " + position + " is clicked.");
             AccessPoint accessPoint = mAccessPoints.get(position);
-            /*ToastUtil.showText(getActivity(),
-                    accessPoint.ssid + " at position " + position + " is clicked.",
-                    Toast.LENGTH_SHORT);*/
             showToast(accessPoint.ssid + " at position " + position + " is clicked.");
             // TODO: Add a pop-up dialog that displays the details of the selected access point.
         });
@@ -172,13 +166,7 @@ public class ListViewFragment extends BaseFragment {
                 if (null != getActivity())
                     ((MainActivity) getActivity()).showOrHideProgressBarScanning(View.VISIBLE);
                 mBtnScan.setEnabled(false);
-                        /*ToastUtil.showText(getActivity(),
-                                R.string.scanning_wifi,
-                                Toast.LENGTH_SHORT, Gravity.CENTER);*/
             } else {
-                /*ToastUtil.showText(getActivity(),
-                        R.string.failed_to_scan_wifi,
-                        Toast.LENGTH_SHORT, Gravity.CENTER);*/
                 showToast(R.string.failed_to_scan_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
 
                 // When failed to scan Wi-Fi, show configured Wi-Fi access point(s).
@@ -191,9 +179,6 @@ public class ListViewFragment extends BaseFragment {
 
                     if (mAccessPoints.isEmpty()) {
                         if (null != getActivity()) {
-                            /*ToastUtil.showText(getActivity().getApplicationContext(),
-                                    R.string.no_configured_wifi,
-                                    Toast.LENGTH_SHORT, Gravity.CENTER);*/
                             showToast(R.string.no_configured_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
                         }
                         Log.i(TAG, "------- mBtnScan::onClick() - No configured Wi-Fi");
@@ -212,40 +197,124 @@ public class ListViewFragment extends BaseFragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (null != mWiFiManager && null != mListView && null != mAdapter && null != intent
-                    && WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equalsIgnoreCase(intent.getAction())) {
-                List<ScanResult> scanResults = mWiFiManager.getScanResults();
-                if (null != scanResults && !scanResults.isEmpty()) {
-                    mAccessPoints.clear();
+            if (null != mWiFiManager && null != mListView && null != mAdapter && null != intent) {
+                Log.d(TAG, "------- mBroadcastReceiver#onReceive(): Action = " + intent.getAction());
 
-                    for (ScanResult result : scanResults) {
-                        // Ignore hidden and ad-hoc networks.
-                        if (TextUtils.isEmpty(result.SSID)
-                                || result.capabilities.contains("[IBSS]")) {
-                            continue;
-                        }
-                        mAccessPoints.add(new AccessPoint(result));
+                if (containFlags(intent, Intent.FLAG_RECEIVER_FOREGROUND)) {
+                    Log.d(TAG, "------- mBroadcastReceiver#onReceive(): Intent.FLAG_RECEIVER_FOREGROUND = YES");
+                    if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equalsIgnoreCase(intent.getAction())) {
+                        handleScanResult();
                     }
-
-                    if (mAccessPoints.isEmpty()) {
-                        /*ToastUtil.showText(getActivity(),
-                                R.string.no_scan_result,
-                                Toast.LENGTH_SHORT, Gravity.CENTER);*/
-                        showToast(R.string.no_scan_result, Toast.LENGTH_SHORT, Gravity.CENTER);
-                    } else {
-                        if (mAccessPoints.size() > 1)
-                            Collections.sort(mAccessPoints, new SortByRSSI());
-                        mAdapter.notifyDataSetChanged();
-                        mListView.smoothScrollToPosition(0);
+                } else {
+                    Log.d(TAG, "------- mBroadcastReceiver#onReceive(): Intent.FLAG_RECEIVER_FOREGROUND = NO");
+                    if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equalsIgnoreCase(intent.getAction())) {
+                        final BroadcastReceiver.PendingResult pendingResult = goAsync();
+                        ScanResultTask asyncTask = new ScanResultTask(pendingResult, intent);
+                        asyncTask.execute();
                     }
                 }
-
-                if (null != mBtnScan)
-                    mBtnScan.setEnabled(true);
-
-                if (null != getActivity())
-                    ((MainActivity) getActivity()).showOrHideProgressBarScanning(View.GONE);
             }
         }
     };
+
+    private void handleScanResult() {
+        List<ScanResult> scanResults = mWiFiManager.getScanResults();
+        if (null != scanResults && !scanResults.isEmpty()) {
+            mAccessPoints.clear();
+
+            for (ScanResult result : scanResults) {
+                // Ignore hidden and ad-hoc networks.
+                if (TextUtils.isEmpty(result.SSID)
+                        || result.capabilities.contains("[IBSS]")) {
+                    continue;
+                }
+                mAccessPoints.add(new AccessPoint(result));
+            }
+
+            if (mAccessPoints.isEmpty()) {
+                showToast(R.string.no_scan_result, Toast.LENGTH_SHORT, Gravity.CENTER);
+            } else {
+                if (mAccessPoints.size() > 1)
+                    Collections.sort(mAccessPoints, new SortByRSSI());
+                mAdapter.notifyDataSetChanged();
+                mListView.smoothScrollToPosition(0);
+            }
+        }
+
+        if (null != mBtnScan)
+            mBtnScan.setEnabled(true);
+
+        if (null != getActivity())
+            ((MainActivity) getActivity()).showOrHideProgressBarScanning(View.GONE);
+    }
+
+    private class ScanResultTask extends AsyncTask<Void, Integer, Boolean> {
+
+        private final BroadcastReceiver.PendingResult pendingResult;
+        private final Intent intent;
+
+        private ScanResultTask(BroadcastReceiver.PendingResult pendingResult, Intent intent) {
+            this.pendingResult = pendingResult;
+            this.intent = intent;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Action: " + intent.getAction() + "\n");
+            sb.append("URI: " + intent.toUri(Intent.URI_INTENT_SCHEME) + "\n");
+            String log = sb.toString();
+            Log.d(TAG, log);
+
+            List<ScanResult> scanResults = mWiFiManager.getScanResults();
+            if (null != scanResults && !scanResults.isEmpty()) {
+                mAccessPoints.clear();
+
+                for (ScanResult result : scanResults) {
+                    // Ignore hidden and ad-hoc networks.
+                    if (TextUtils.isEmpty(result.SSID) || result.capabilities.contains("[IBSS]")) {
+                        continue;
+                    }
+                    Log.d(TAG, "------- mBroadcastReceiver#onReceive(): Security = " + result.capabilities);
+                    mAccessPoints.add(new AccessPoint(result));
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean scanResult) {
+            super.onPostExecute(scanResult);
+
+            if (scanResult) {
+                if (mAccessPoints.isEmpty()) {
+                    showToast(R.string.no_scan_result, Toast.LENGTH_SHORT, Gravity.CENTER);
+                } else {
+                    if (1 < mAccessPoints.size())
+                        Collections.sort(mAccessPoints, new SortByRSSI());
+                    mAdapter.notifyDataSetChanged();
+                    mListView.smoothScrollToPosition(0);
+                }
+            } else {
+                showToast(R.string.failed_to_scan_wifi, Toast.LENGTH_SHORT, Gravity.CENTER);
+            }
+
+            if (null != mBtnScan)
+                mBtnScan.setEnabled(true);
+
+            if (null != getActivity())
+                ((MainActivity) getActivity()).showOrHideProgressBarScanning(View.GONE);
+
+            // Must call finish() so the BroadcastReceiver can be recycled.
+            pendingResult.finish();
+        }
+    }
 }
